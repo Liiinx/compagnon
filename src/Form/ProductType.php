@@ -31,7 +31,7 @@ class ProductType extends AbstractType
 //                 'expanded' => true,
             ])
 //            ->add('user')
-            ->add('address', TextType::class)
+            ->add('address', LocationType::class)
             /*->add('address', EntityType::class, [
                 'class' => Location::class,
                 'choice_label' => 'address'
