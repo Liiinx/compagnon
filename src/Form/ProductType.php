@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Category;
-use App\Entity\Location;
 use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -31,7 +30,9 @@ class ProductType extends AbstractType
 //                 'expanded' => true,
             ])
 //            ->add('user')
-            ->add('address', LocationType::class)
+            ->add('address', LocationType::class, [
+                'label' => false
+            ])
             /*->add('address', EntityType::class, [
                 'class' => Location::class,
                 'choice_label' => 'address'

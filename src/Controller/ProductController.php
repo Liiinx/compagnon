@@ -20,43 +20,44 @@ class ProductController extends AbstractController
     public function index(ProductRepository $product): Response
     {
         $products = $product->findAll();
-
         return $this->render('product/index.html.twig', [
             'products' => $products
         ]);
     }
 
     /**
-     * @Route("/new_product", name="new_product")
+     * @Route("/product_new", name="product_new")
      * @param Request $request
      * @return Response
      */
     public function new(Request $request): Response
     {
-
         $product = new Product();
-
-        /*$product->setTitle('test');
-        $product->setDescription('tes skjhqe oiwd oidfh');
-        $product->setPrice(10);*/
-
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $product = $form->getData();
-            var_dump($product);
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
             $entityManager->flush();
 
             return $this->redirectToRoute('home');
-
         }
-
         return $this->render('product/new.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
 
+    /**
+     * @Route("/product_list", name="product_list")
+     * @param ProductRepository $product
+     * @return Response
+     */
+    public function getAllProducts(ProductRepository $product): Response
+    {
+        $products = $product->findAll();
+        return $this->render('product/list.html.twig', [
+            'products' => $products
+        ]);
     }
 }
