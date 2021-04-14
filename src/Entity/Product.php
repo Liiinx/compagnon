@@ -65,9 +65,8 @@ class Product
     private $user;
 
     /**
-     * @var \Location
      *
-     * @ORM\ManyToOne(targetEntity="Location", inversedBy="product", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Location", inversedBy="product", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="address_id", referencedColumnName="id")
      * })

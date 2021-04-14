@@ -50,14 +50,18 @@ class Location
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="address", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Product", mappedBy="address", cascade={"persist", "remove"})
      */
     private $product;
 
     public function __construct()
     {
-        $this->product = new ArrayCollection();
+//        $this->product = new ArrayCollection();
         $this->user = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+        return $this->address;
     }
 
     public function getId(): ?int

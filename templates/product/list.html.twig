@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes produits{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js" defer></script>
+    <script type="text/javascript" defer>
+        // $(document).ready(function() {
+        //     $('#products_list').DataTable();
+        // } );
+    </script>
+
+{% endblock %}
+{% block body %}
+    <table id="products_list" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Address</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <th scope="row">{{ product.id }}</th>
+                <td>{{ product.title|u.truncate(20, '...') }}</td>
+                <td>{{ product.category.name }}</td>
+                <td>{{ product.address.address|u.truncate(30, '...') }}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-danger" title="destroy"><i class="bi bi-trash"></i></button>
+                    <button type="button" class="btn btn-outline-info" title="modify"><i class="bi bi-pencil-square"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

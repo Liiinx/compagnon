@@ -1,5 +1,5 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     globals:
-        token_mapbox_gl: 'pk.eyJ1IjoiZi10dWZmIiwiYSI6ImNrbWI0dnQzdzE0ODIydnBoOW5uMGw4ZXUifQ.-7cgcpBp7TUjYuCspjT04w'
+        token_mapbox_gl: '%env(string:MAPBOX_TOKEN)%'
     form_themes: [ 'bootstrap_4_layout.html.twig' ]
