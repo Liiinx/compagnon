@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Product
  *
- * @ORM\Table(name="product", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_D34A04ADF5B7AF75", columns={"address_id"})}, indexes={@ORM\Index(name="IDX_D34A04AD12469DE2", columns={"category_id"}), @ORM\Index(name="IDX_D34A04ADA76ED395", columns={"user_id"})})
+ * @ORM\Table(name="product", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_D34A04ADF5B7AF75", columns={"address_id"})}, indexes={@ORM\Index(name="IDX_D34A04AD12469DE2", columns={"category_id"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
 class Product
@@ -55,16 +54,6 @@ class Product
     private $category;
 
     /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="products")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
-     */
-    private $user;
-
-    /**
      *
      * @ORM\OneToOne(targetEntity="Location", inversedBy="product", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
@@ -79,7 +68,7 @@ class Product
      * @ORM\ManyToMany(targetEntity="Image", inversedBy="product")
      * @ORM\JoinTable(name="product_image",
      *   joinColumns={
-     *     @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      *   },
      *   inverseJoinColumns={
      *     @ORM\JoinColumn(name="image_id", referencedColumnName="id")
@@ -145,18 +134,6 @@ class Product
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }

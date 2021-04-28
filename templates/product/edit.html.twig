@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier un produit{% endblock %}
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-6">
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('algoliaPlaces') }}
+{% endblock %}

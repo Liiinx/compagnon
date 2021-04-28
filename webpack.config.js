@@ -21,6 +21,7 @@ Encore
      * and one CSS file (e.g. app.scss) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('jquery', './assets/jquery.js')
     .addEntry('algoliaPlaces', './assets/algoliaPlaces.js')
     .addEntry('mapboxGlJs', './assets/mapbox_gl_js.js')
 

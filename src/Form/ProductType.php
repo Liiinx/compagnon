@@ -29,7 +29,6 @@ class ProductType extends AbstractType
 //                 'multiple' => true,
 //                 'expanded' => true,
             ])
-//            ->add('user')
             ->add('address', LocationType::class, [
                 'label' => false
             ])
