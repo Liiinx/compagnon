@@ -45,11 +45,6 @@ class Location
     private $longitude;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="address", cascade={"persist", "remove"})
-     */
-    private $user;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Product", mappedBy="address", cascade={"persist", "remove"})
      */
     private $product;
@@ -57,7 +52,6 @@ class Location
     public function __construct()
     {
 //        $this->product = new ArrayCollection();
-        $this->user = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -105,28 +99,6 @@ class Location
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setAddress(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getAddress() !== $this) {
-            $user->setAddress($this);
-        }
-
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getProduct(): ?Product
     {
         return $this->product;
@@ -170,28 +142,4 @@ class Location
 
         return $this;
     }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-            $user->setAddress($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->user->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getAddress() === $this) {
-                $user->setAddress(null);
-            }
-        }
-
-        return $this;
-    }
-
-
 }

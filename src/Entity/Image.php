@@ -31,11 +31,6 @@ class Image
     private $url;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="image", cascade={"persist", "remove"})
-     */
-    private $user;
-
-    /**
      * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="Product", mappedBy="image")
@@ -48,7 +43,6 @@ class Image
     public function __construct()
     {
         $this->product = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->user = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,49 +88,4 @@ class Image
 
         return $this;
     }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setImage(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getImage() !== $this) {
-            $user->setImage($this);
-        }
-
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-            $user->setImage($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->user->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getImage() === $this) {
-                $user->setImage(null);
-            }
-        }
-
-        return $this;
-    }
-
 }

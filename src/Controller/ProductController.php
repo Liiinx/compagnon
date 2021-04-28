@@ -26,6 +26,19 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/product_list", name="product_list")
+     * @param ProductRepository $product
+     * @return Response
+     */
+    public function getAllProducts(ProductRepository $product): Response
+    {
+        $products = $product->findAll();
+        return $this->render('product/list.html.twig', [
+            'products' => $products
+        ]);
+    }
+
+    /**
      * @Route("/product_new", name="product_new")
      * @param Request $request
      * @return Response
@@ -44,20 +57,44 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('home');
         }
         return $this->render('product/new.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/product_list", name="product_list")
-     * @param ProductRepository $product
+     * @Route("/product_edit/{id}", name="product_edit", requirements={"id":"\d+"})
+     * @param Product $product
+     * @param Request $request
      * @return Response
      */
-    public function getAllProducts(ProductRepository $product): Response
+    public function edit(Product $product, Request $request): Response
     {
-        $products = $product->findAll();
-        return $this->render('product/list.html.twig', [
-            'products' => $products
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('product_list');
+        }
+        return $this->render('product/edit.html.twig', [
+            'product' => $product,
+            'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/product_delete/{id}", name="product_delete", methods={"DELETE"})
+     * @param Product $product
+     * @param Request $request
+     * @return Response
+     */
+    public function delete(Product $product, Request $request): Response
+    {
+        $submittedToken = $request->request->get('token');
+        if ($this->isCsrfTokenValid('delete-product', $submittedToken)) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($product);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('product_list');
     }
 }
