@@ -5,9 +5,16 @@ $primary: darken(#428bca, 50%);
 @import "~bootstrap/scss/bootstrap";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
-body {
-    background-color: whitesmoke;
-}
+
+//---------GENERAL---------
+
 .container {
     padding: 15px;
+    text-align: center;
+}
+
+//---------MAP---------
+#mapBox-map {
+    width: 80%;
+    height: 500px;
 }

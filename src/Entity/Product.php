@@ -37,13 +37,6 @@ class Product
     private $description;
 
     /**
-     * @var float|null
-     *
-     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=true)
-     */
-    private $price;
-
-    /**
      * @var \Category
      *
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")

@@ -6,34 +6,35 @@
 {% endblock %}
 
 {% block body %}
-        <div>
-            <div id="mapBox-map" style='width: 100%; height: 500px;'></div>
-        </div>
-        <div class="">
-            {% for product in products %}
-                <h3>{{ product.title }}</h3>
-                <p>{{ product.description }}</p>
-                <p>{{ product.price }}</p>
-                <p>{{ product.address.latitude }}</p>
-            {% endfor %}
-        </div>
+    <div class="row justify-content-center">
+        <div id="mapBox-map"></div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
-{#    {{ encore_entry_script_tags('ajax') }}#}
+    {#    {{ encore_entry_script_tags('ajax') }}#}
     <script type="text/javascript">
         // Définition de l'objet Location via un constructeur
-        function Location(title, price, lat, lng) { this.title = title; this.price = price; this.lat = lat; this.lng = lng;
+        function Location(title, lat, lng, category, categoryId) {
+            this.title = title;
+            this.lat = lat;
+            this.lng = lng;
+            this.category = category;
+            this.categoryId = categoryId;
         }
         let locations = [];
+        let form = {{ form(form)|json_encode()|raw }};
+        {#let categories = {{ categories|json_encode()|raw }};#}
         {% for product in products %}
-        locations.push(new Location(
-            "{{ product.title|escape('js') }}",
-                {{ product.price }},
+{#        {{ dump(product.category.id) }}#}
+            locations.push(new Location(
+                "{{ product.title|escape('js') }}",
                 {{ product.address.latitude }},
                 {{ product.address.longitude }},
-        ));
+                {{ product.category.name|json_encode()|raw }},
+                {{ product.category.id }}
+            ));
         {% endfor %}
         let token_mapbox_gl = '{{ token_mapbox_gl }}';
     </script>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,14 +15,34 @@ class ProductController extends AbstractController
 {
     /**
      * @Route("/", name="home")
-     * @param ProductRepository $product
+     * @param ProductRepository $productRepository
+     * @param CategoryRepository $categoryRepository
+     * @param Request $request
      * @return Response
      */
-    public function index(ProductRepository $product): Response
+    public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request): Response
     {
-        $products = $product->findAll();
+        $product = new Product();
+        /*$form = $this->createForm(ProductType::class, $product, [
+            'action' => $this->generateUrl('product_map_new'),
+            'method' => 'POST',
+        ]);*/
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $product = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($product);
+            $entityManager->flush();
+            return $this->redirectToRoute('home');
+        }
+
+        $products = $productRepository->findAll();
+//        $categories = $categoryRepository->findAllCategoryName();
         return $this->render('product/index.html.twig', [
-            'products' => $products
+            'products' => $products,
+//            'categories' => $categories,
+            'form' => $form->createView()
         ]);
     }
 
@@ -96,5 +117,15 @@ class ProductController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('product_list');
+    }
+
+    /**
+     * @Route("/product_map_new", name="product_map_new")
+     */
+    public function mapNewProduct(Request $request)
+    {
+
+        $content = $request->getContent();
+        dd($request);
     }
 }

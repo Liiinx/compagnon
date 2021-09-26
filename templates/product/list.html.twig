@@ -29,7 +29,7 @@
                 <td>{{ product.address.address|u.truncate(30, '...') }}</td>
                 <td>
                     <a href="{{ path('product_edit', {id : product.id }) }}" class="btn btn-outline-info" title="modif"><i class="bi bi-pencil-square"></i></a>
-                    <form action="{{ path('product_delete', {id : product.id }) }}" method="post" style="display: inline-block">
+                    <form action="{{ path('product_delete', {id : product.id }) }}" method="post" style="display: inline-block" onclick="return confirm('Effacer le marker {{ product.title }} ?');">
                         <input type="hidden" name="token" value="{{ csrf_token('delete-product') }}"/>
                         <input type="hidden" name="_method" value="DELETE"/>
                         <button type="submit" class="btn btn-outline-danger" title="destroy"><i class="bi bi-trash"></i></button>
